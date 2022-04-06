@@ -21,6 +21,6 @@ jobs:
       - name: Dagger
         uses: dagger/dagger-for-github@v2
         with:
-          args: do -p jeremyprod deploy
+          args: do -p ./jeremyprod deploy
         env:
           dagger_netlify_token: ${{ secrets.DAGGER_NETLIFY_TOKEN }}
