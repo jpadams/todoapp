@@ -3,7 +3,6 @@
 // | (_| | (_| | (_| | (_| |  __/ |
 //  \__,_|\__,_|\__, |\__, |\___|_|
 //              |___/ |___/
-
 package todoapp
 
 import (
@@ -38,9 +37,9 @@ dagger.#Plan & {
 			"./_build": write: contents: actions.build.contents.output
 		}
 		env: {
+			//APP_NAME: string
 			//NETLIFY_TEAM: string
 			//NETLIFY_TOKEN: dagger.#Secret
-			//APP_NAME: string
 		}
 	}
 	actions: {
