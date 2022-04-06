@@ -15,13 +15,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Dagger
+      - name: Dagger
         uses: dagger/dagger-for-github@v2
 		env:
-			dagger_netlify_token: ${{ secrets.DAGGER_NETLIFY_TOKEN }}
+		  dagger_netlify_token: ${{ secrets.DAGGER_NETLIFY_TOKEN }}
         with:
           args: do -p jeremyprod deploy
