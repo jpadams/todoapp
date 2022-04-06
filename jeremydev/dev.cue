@@ -8,7 +8,7 @@ client: filesystem: "~/dagger_netlify_token": read: contents: dagger.#Secret
 
 actions: deploy: {
 	token:  client.filesystem."~/dagger_netlify_token".read.contents
-	site:   "f11sjdhfkasjdlksdjflkasjdlfkjsadlkfjslkajfls"
+	site:   "jeremydevsite"
 	team:   "jpadams"
 	create: true
 }
