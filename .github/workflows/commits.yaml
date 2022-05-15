@@ -17,7 +17,7 @@ jobs:
         run: |
           echo '${{ steps.get-pr-commits.outputs.commits }}' > /tmp/json
           echo "num_commits=$(jq '. | length' < /tmp/json)" >> $GITHUB_ENV
-          [[ ${{ env.num_commits }}) -eq 1 ]] || echo 'Squash down to 1 commit per PR';exit ${{ env.num_commits }} 
+          [[ ${{ env.num_commits }} -eq 1 ]] || echo 'Squash down to 1 commit per PR';exit ${{ env.num_commits }} 
 
       - name: Check commit prefix
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
