@@ -1,0 +1,30 @@
+name: 'Commit Message Check'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  check-commit-message:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Commits
+        id: 'get-pr-commits'
+        uses: tim-actions/get-pr-commits@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for only one commit per PR
+        run: |
+          [[ $(echo ${{ steps.get-pr-commits.outputs.commits }} | jq '. | length') -eq 1 ]]
+
+      - name: Check commit prefix
+        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+        with:
+          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          pattern: '^(docs|test|chore|website|ci|infra|fix|feat):.*$'
+          error: 'Commit message must lead with prefix: https://docs.dagger.io/1227/contributing#commit-messages'
