@@ -18,4 +18,4 @@ jobs:
         with:
           commits: ${{ steps.get-pr-commits.outputs.commits }}
           pattern: '^(docs|test|chore|website|ci|infra|fix|feat):.*$'
-          error: 'Commit message must lead with prefix: https://docs.dagger.io/1227/contributing#commit-messages'
+          error: 'Commit message must lead with a prefix from: https://docs.dagger.io/1227/contributing#commit-messages. Use "feat: xxxxx" for new Universe packages.'
