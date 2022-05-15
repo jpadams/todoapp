@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Dagger Prod Deploy
+      - name: Dagger Prod Deployeeeeeeeeeeeeee
         uses: dagger/dagger-for-github@v2
         with:
           args: do -p ./jeremyprod deploy
