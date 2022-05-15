@@ -20,7 +20,8 @@ jobs:
 
       - name: Check for only one commit per PR
         run: |
-          [[ $(echo '${{ steps.get-pr-commits.outputs.commits }}' | jq '. | length') -eq 1 ]]
+          echo ${{ steps.get-pr-commits.outputs.commits }} | jq '. | length' > /tmp/len
+          [[ `cat /tmp/len` -eq 1 ]]
 
       - name: Check commit prefix
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
