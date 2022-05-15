@@ -12,7 +12,6 @@ jobs:
         uses: tim-actions/get-pr-commits@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-echo "{environment_variable_name}={value}" >> $GITHUB_ENV
 
       - name: Check for only one commit per PR
         run: |
