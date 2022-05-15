@@ -12,10 +12,17 @@ jobs:
         uses: tim-actions/get-pr-commits@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
+    
+      - name: Write PRs to file
+        uses: DamianReeves/write-file-action@v1.0
+        with:
+          path: '/tmp/pr_json'
+          contents: ${{ steps.get-pr-commits.outputs.commits }}
+          write-mode: overwrite
+  
       - name: Must be only one commit per PR. Squash commits.
         run: |
-          echo "num_commits=$(${{ steps.get-pr-commits.outputs.commits }} | jq ". | length")" >> $GITHUB_ENV
+          echo "num_commits=$(jq '. | length' < /tmp/pr_json)" >> $GITHUB_ENV
           [[ ${{ env.num_commits }} -eq 1 ]]
           
       - name: Must use valid commit prefix
