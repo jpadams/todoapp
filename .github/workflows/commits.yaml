@@ -23,7 +23,8 @@ jobs:
       - name: Check for only one commit per PR
         run: |
           echo '${{ steps.get-pr-commits.outputs.commits }}' > /tmp/json
-          [[ $(jq '. | length' < /tmp/json) -eq 1 ]]
+          echo "num_commits=$(jq '. | length' < /tmp/json)" >> $GITHUB_ENV
+          [[ ${{ env.num_commits }} -eq 1 ]]
           
       - name: Must use valid commit prefix
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
