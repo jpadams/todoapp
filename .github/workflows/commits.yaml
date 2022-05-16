@@ -20,10 +20,10 @@ jobs:
           contents: ${{ steps.get-pr-commits.outputs.commits }}
           write-mode: overwrite
   
-      - name: Must be only one commit per PR. Squash commits.
+      - name: Check for only one commit per PR
         run: |
-          echo "num_commits=$(jq --raw-input --slurp '. | length' < /tmp/pr_json)" >> $GITHUB_ENV
-          [[ ${{ env.num_commits }} -eq 1 ]]
+          echo '${{ steps.get-pr-commits.outputs.commits }}' > /tmp/json
+          [[ $(jq '. | length' < /tmp/json) -eq 1 ]]
           
       - name: Must use valid commit prefix
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
