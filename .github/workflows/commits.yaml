@@ -23,5 +23,5 @@ jobs:
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
         with:
           commits: ${{ steps.get-pr-commits.outputs.commits }}
-          pattern: '^(docs|test|chore|website|ci|infra|fix|feat):.*$'
+          pattern: '(?<!\s+)^(docs|test|chore|website|ci|infra|fix|feat):.*$'
           error: 'Commit message must lead with a prefix from https://docs.dagger.io/1227/contributing#commit-messages / Use "feat: Add <package name> package" (without quotes) for new Universe packages / fix with `git commit -s --amend`'
