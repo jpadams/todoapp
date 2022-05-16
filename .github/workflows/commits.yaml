@@ -17,7 +17,7 @@ jobs:
         run: |
           echo '${{ steps.get-pr-commits.outputs.commits }}' > /tmp/json
           jq '. | length' < /tmp/json > /tmp/len
-          if [[ `cat /tmp/len` == 1 ]]; then exit 0; else echo "Expected 1 commit but got `cat /tmp/len`"; echo "fix with \`git rebase -i HEAD~`cat /tmp/len`\` and squash to 1 commit; exit 1; fi;
+          if [[ `cat /tmp/len` == 1 ]]; then exit 0; else echo "Expected 1 commit but got `cat /tmp/len`"; echo "fix with \`git rebase -i HEAD~`cat /tmp/len`\` and squash to 1 commit"; exit 1; fi;
           
       - name: Must use valid commit prefix
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
