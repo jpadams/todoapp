@@ -4,7 +4,7 @@ on:
 
 jobs:
   check-commit-message:
-    name: Check Commit Message
+    name: Check Commits
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Commits
@@ -12,22 +12,12 @@ jobs:
         uses: tim-actions/get-pr-commits@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-    
-      - name: Write PRs to file
-        uses: DamianReeves/write-file-action@v1.0
-        with:
-          path: '/tmp/pr_json'
-          contents: ${{ steps.get-pr-commits.outputs.commits }}
-          write-mode: overwrite
   
-      - name: Check for only one commit per PR
+      - name: Must be only one commit per PR
         run: |
           echo '${{ steps.get-pr-commits.outputs.commits }}' > /tmp/json
           jq '. | length' < /tmp/json > /tmp/len
-          echo "============="
-          cat /tmp/len
-          echo "============="
-          [[ `cat /tmp/len` -eq 1 ]]
+          if [[ `cat /tmp/len` == 1 ]]; then exit 0; else exit `cat /tmp/len`; fi;
           
       - name: Must use valid commit prefix
         uses: tim-actions/commit-message-checker-with-regex@v0.3.1
