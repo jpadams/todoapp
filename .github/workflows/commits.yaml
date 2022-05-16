@@ -26,6 +26,8 @@ jobs:
           echo "====="
           wc -l < /tmp/json
           echo "====="
+          head /tmp/json
+          echo "====="
           echo "num_commits=$(jq '. | length' < /tmp/json)" >> $GITHUB_ENV
           [[ ${{ env.num_commits }} -eq 1 ]]
           
