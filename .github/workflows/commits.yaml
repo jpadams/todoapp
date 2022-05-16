@@ -22,7 +22,7 @@ jobs:
   
       - name: Must be only one commit per PR. Squash commits.
         run: |
-          echo "num_commits=$(jq '. | length' < /tmp/pr_json)" >> $GITHUB_ENV
+          echo "num_commits=$(jq --raw --slurp '. | length' < /tmp/pr_json)" >> $GITHUB_ENV
           [[ ${{ env.num_commits }} -eq 1 ]]
           
       - name: Must use valid commit prefix
