@@ -23,6 +23,9 @@ jobs:
       - name: Check for only one commit per PR
         run: |
           echo '${{ steps.get-pr-commits.outputs.commits }}' > /tmp/json
+          echo "====="
+          wc -l < /tmp/json
+          echo "====="
           echo "num_commits=$(jq '. | length' < /tmp/json)" >> $GITHUB_ENV
           [[ ${{ env.num_commits }} -eq 1 ]]
           
