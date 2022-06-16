@@ -12,8 +12,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Dagger Prod Deploy
-        uses: dagger/dagger-for-github@v2
+        uses: dagger/dagger-for-github@v3
         with:
-          args: do -p ./jeremyprod deploy
+          cmds: |
+            project update
+            do -p ./jeremyprod deploy
         env:
           dagger_netlify_token: ${{ secrets.DAGGER_NETLIFY_TOKEN }}
