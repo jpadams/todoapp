@@ -12,7 +12,10 @@ dagger.#Plan & {
 
 		simple: go.#Container & {
 			source: _source
-			command: args: ["version"]
+			command: {
+				name: "go"
+				args: ["version"]
+			}
 		}
 
 		override: {
@@ -21,9 +24,12 @@ dagger.#Plan & {
 			}
 
 			command: go.#Container & {
-				input:  base.output
+				image:  base.output
 				source: _source
-				command: args: ["version"]
+				command: {
+					name: "go"
+					args: ["version"]
+				}
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package go
 
 import (
 	"dagger.io/dagger"
+	"universe.dagger.io/docker"
 )
 
 // Build a go binary
@@ -9,14 +10,17 @@ import (
 	// Source code
 	source: dagger.#FS
 
+	// DEPRECATED: use packages instead
+	package: string | *null
+
 	// Target package to build
-	package: *"." | string
+	packages: [...string]
 
 	// Target architecture
-	arch: *"amd64" | string
+	arch?: string
 
 	// Target OS
-	os: *"linux" | string
+	os?: string
 
 	// Build tags to use for building
 	tags: *"" | string
@@ -26,21 +30,49 @@ import (
 
 	env: [string]: string
 
+	// Custom go image
+	image: *#Image.output | docker.#Image
+
+	// Custom binary name
+	binaryName: *"" | string
+
 	container: #Container & {
 		"source": source
+		"image":  image
 		"env": {
 			env
-			GOOS:   os
-			GOARCH: arch
+			if os != _|_ {
+				GOOS: os
+			}
+			if arch != _|_ {
+				GOARCH: arch
+			}
 		}
 		command: {
-			args: [package]
+			//FIXME: find a better workaround with disjunction
+			//FIXME: factor with the part from test.cue
+			_packages: [...string]
+			if package == null && len(packages) == 0 {
+				_packages: ["."]
+			}
+			if package != null && len(packages) == 0 {
+				_packages: [package]
+			}
+			if package == null && len(packages) > 0 {
+				_packages: packages
+			}
+			if package != null && len(packages) > 0 {
+				_packages: [package] + packages
+			}
+
+			name: "go"
+			args: _packages
 			flags: {
 				build:      true
 				"-v":       true
 				"-tags":    tags
 				"-ldflags": ldflags
-				"-o":       "/output/"
+				"-o":       "/output/\(binaryName)"
 			}
 		}
 		export: directories: "/output": _

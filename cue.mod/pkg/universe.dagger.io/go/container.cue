@@ -15,28 +15,38 @@ import (
 	// Source code
 	source: dagger.#FS
 
-	// Use go image
-	_image: #Image
+	// Counter FS not set disjunction error
+	_img: #Image
 
-	_sourcePath: "/src"
-	_cachePath:  "/root/.cache/gocache"
+	image: *_img.output | docker.#Image
+
+	_sourcePath:     "/src"
+	_modCachePath:   "/root/.cache/go-mod"
+	_buildCachePath: "/root/.cache/go-build"
+
+	_copy: docker.#Copy & {
+		input:    image
+		dest:     _sourcePath
+		contents: source
+	}
 
 	docker.#Run & {
-		input:   *_image.output | docker.#Image
-		workdir: "/src"
-		command: name: "go"
+		input:   _copy.output
+		workdir: _sourcePath
 		mounts: {
-			"source": {
-				dest:     _sourcePath
-				contents: source
-			}
-			"go assets cache": {
+			"go mod cache": {
 				contents: core.#CacheDir & {
-					id: "\(name)_assets"
+					id: "\(name)_mod"
 				}
-				dest: _cachePath
+				dest: _modCachePath
+			}
+			"go build cache": {
+				contents: core.#CacheDir & {
+					id: "\(name)_build"
+				}
+				dest: _buildCachePath
 			}
 		}
-		env: GOMODCACHE: _cachePath
+		env: GOMODCACHE: _modCachePath
 	}
 }

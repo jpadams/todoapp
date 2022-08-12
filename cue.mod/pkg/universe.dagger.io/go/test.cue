@@ -2,12 +2,15 @@ package go
 
 // Test a go package
 #Test: {
-	// Package to test
-	package: *"." | string
+	package: string | *"." @deprecated("use `packages` instead")
+
+	// Packages to test
+	packages: [...string] | *[package]
 
 	#Container & {
 		command: {
-			args: [package]
+			name: "go"
+			args: packages
 			flags: {
 				test: true
 				"-v": true
